@@ -3,8 +3,13 @@
 
 :root {
     font-family: 'DM Sans', sans-serif;
-    color: #201f1b;
-    background: #f1f0eb;
+    color: #f5f5f5;
+    background: #000;
+    --color-black: #000;
+    --color-white: #f5f5f5;
+    --color-gray: #a3a3a3;
+    --color-gray-soft: #737373;
+    --color-brown: #8b5e3c;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -34,8 +39,8 @@ a {
     max-height: 100svh;
     position: relative;
     overflow: hidden;
-    background: #161b1e;
-    color: #f5f2e9;
+    background: var(--color-black);
+    color: var(--color-white);
 }
 
 .hero-image {
@@ -132,9 +137,9 @@ a {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #bd9b70;
+    background: var(--color-brown);
     margin-left: 4px;
-    box-shadow: 0 0 9px #bd9b70;
+    box-shadow: 0 0 9px var(--color-brown);
 }
 
 h1,
@@ -176,7 +181,9 @@ h2,
 .round-link {
     width: 42px;
     height: 42px;
-    border: 1px solid rgba(255, 255, 255, .47);
+    border: 1px solid var(--color-brown);
+    background: var(--color-brown);
+    color: var(--color-white);
     border-radius: 50%;
     display: grid;
     place-items: center;
@@ -184,8 +191,8 @@ h2,
 }
 
 .round-link:hover {
-    background: #f5f2e9;
-    color: #201f1b;
+    background: #70492f;
+    color: var(--color-white);
 }
 
 .hero-foot {
@@ -209,8 +216,8 @@ h2,
     display: flex;
     justify-content: space-between;
     padding-bottom: 15px;
-    border-bottom: 1px solid #c9c7bf;
-    color: #77756f;
+    border-bottom: 1px solid #333;
+    color: var(--color-gray);
     font-size: 8px;
     letter-spacing: .15em;
 }
@@ -230,7 +237,7 @@ h2,
 }
 
 .intro-kicker em {
-    color: #a48b6e;
+    color: var(--color-brown);
 }
 
 .intro-copy {
@@ -239,13 +246,13 @@ h2,
 
 .intro-copy p {
     font-size: 12px;
-    color: #797871;
+    color: var(--color-gray);
     line-height: 1.9;
     max-width: 385px;
 }
 
 .intro-copy .intro-lead {
-    color: #292823;
+    color: var(--color-white);
     font-family: 'Cormorant Garamond', serif;
     font-size: 27px;
     line-height: 1.24;
@@ -258,7 +265,7 @@ h2,
     gap: 15px;
     margin-top: 19px;
     font-size: 10px;
-    border-bottom: 1px solid #9f9c92;
+    border-bottom: 1px solid var(--color-brown);
     padding-bottom: 8px;
 }
 
@@ -267,7 +274,7 @@ h2,
     justify-content: space-between;
     font-size: 8px;
     letter-spacing: .13em;
-    color: #85837b;
+    color: var(--color-gray-soft);
 }
 
 .intro-meta .live-dot {
@@ -276,7 +283,7 @@ h2,
 }
 
 .work {
-    background: #e8e7e1;
+    background: var(--color-black);
     padding-top: 84px;
     padding-bottom: 96px;
 }
@@ -295,11 +302,11 @@ h2,
 }
 
 .work-heading h2 em {
-    color: #a48b6e;
+    color: var(--color-brown);
 }
 
 .work-heading>p {
-    color: #77756f;
+    color: var(--color-gray);
     font-size: 11px;
     line-height: 1.8;
     margin: 0 0 4px;
@@ -388,11 +395,11 @@ h2,
 .film-caption p {
     margin: 2px 0 0;
     font-size: 9px;
-    color: #85837b;
+    color: var(--color-gray-soft);
 }
 
 .film-arrow {
-    color: #8e8b82;
+    color: var(--color-gray);
     transition: transform .2s;
 }
 
@@ -402,20 +409,20 @@ h2,
 
 .gallery-note {
     text-align: center;
-    color: #85837b;
+    color: var(--color-gray);
     font-size: 8px;
     letter-spacing: .14em;
     margin: 59px 0 0;
 }
 
 .gallery-note span {
-    color: #282721;
+    color: var(--color-brown);
     margin-left: 6px;
 }
 
 .contact {
-    background: #222522;
-    color: #f1f0eb;
+    background: #0b0b0b;
+    color: var(--color-white);
     padding: 82px 11.4% 22px;
 }
 
@@ -428,7 +435,7 @@ h2,
 }
 
 .contact .eyebrow {
-    color: #b8a88f;
+    color: var(--color-gray);
     margin-bottom: 26px;
 }
 
@@ -439,7 +446,7 @@ h2,
 }
 
 .contact h2 em {
-    color: #b5a38b;
+    color: var(--color-brown);
 }
 
 .contact-link {
@@ -447,9 +454,16 @@ h2,
     gap: 24px;
     align-items: center;
     margin-top: 38px;
-    padding-bottom: 9px;
-    border-bottom: 1px solid rgba(255, 255, 255, .4);
+    padding: 13px 17px;
+    border: 1px solid var(--color-brown);
+    background: var(--color-brown);
+    color: var(--color-white);
+    transition: background .2s;
     font-size: 10px;
+}
+
+.contact-link:hover {
+    background: #70492f;
 }
 
 .contact-foot {
@@ -459,7 +473,7 @@ h2,
     justify-content: space-between;
     font-size: 8px;
     letter-spacing: .11em;
-    color: #aaa99f;
+    color: var(--color-gray);
 }
 
 @media (max-width: 700px) {
