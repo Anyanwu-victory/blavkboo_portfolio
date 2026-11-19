@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
 :root {
@@ -61,34 +61,43 @@ a {
 
 .site-header {
     position: absolute;
-    z-index: 2;
-    inset: 0 5.4% auto;
-    height: 96px;
+    z-index: 4;
+    inset: 0 0 auto;
+    height: 112px;
+    padding: 0 5.4%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, .22);
+    border-bottom: 1px solid rgba(255, 255, 255, .28);
+    background: rgba(0, 0, 0, .46);
 }
 
 .wordmark {
-    font-size: 19px;
-    letter-spacing: -.08em;
-    font-weight: 600;
+    font-family: 'Allura', cursive;
+    font-size: 39px;
+    line-height: 1;
+    letter-spacing: 0;
+    font-weight: 400;
+    text-transform: lowercase;
 }
 
 .wordmark span {
-    font-size: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 8px;
     vertical-align: top;
-    margin-left: 3px;
+    margin-left: 1px;
     letter-spacing: 0;
 }
 
 .site-header nav {
     display: flex;
-    gap: 39px;
+    gap: clamp(24px, 4.2vw, 76px);
     align-items: center;
-    font-size: 11px;
-    letter-spacing: .04em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
 }
 
 .site-header nav a {
@@ -103,10 +112,71 @@ a {
     opacity: 1;
 }
 
-.header-location {
+.menu-trigger {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    opacity: .82;
+    transition: opacity .2s;
+}
+
+.menu-trigger:hover {
+    opacity: 1;
+}
+
+.menu-overlay {
+    position: fixed;
+    z-index: 3;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 11.4% 50px;
+    background: #000;
+}
+
+.menu-overlay nav {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.menu-overlay nav a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    max-width: 820px;
+    border-bottom: 1px solid #292929;
+    padding: 10px 0 17px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 8vw, 100px);
+    line-height: 1;
+    transition: color .2s;
+}
+
+.menu-overlay nav a:hover {
+    color: var(--color-gray);
+}
+
+.menu-overlay nav span,
+.menu-overlay > p {
+    color: var(--color-gray-soft);
+    font-family: 'DM Sans', sans-serif;
     font-size: 9px;
-    letter-spacing: .14em;
-    opacity: .72;
+    letter-spacing: .16em;
+}
+
+.menu-overlay > p {
+    margin-top: 36px;
+}
+
+.header-location {
+    display: none;
 }
 
 .hero-content {
@@ -143,8 +213,7 @@ a {
 }
 
 h1,
-h2,
-.intro-kicker {
+h2 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
     letter-spacing: -.045em;
@@ -157,7 +226,6 @@ h2,
 }
 
 .hero h1 em,
-.intro-kicker em,
 .work-heading h2 em,
 .contact h2 em {
     font-weight: 300;
@@ -224,20 +292,20 @@ h2,
 
 .intro-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: .9fr 1fr;
     gap: 12%;
     padding: 77px 0 69px;
     align-items: center;
 }
 
-.intro-kicker {
-    font-size: clamp(53px, 7vw, 91px);
-    line-height: .83;
-    margin: 0;
-}
-
-.intro-kicker em {
-    color: var(--color-brown);
+.about-photo {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center 28%;
+    filter: grayscale(100%);
 }
 
 .intro-copy {
@@ -423,11 +491,12 @@ h2,
 .contact {
     background: #0b0b0b;
     color: var(--color-white);
-    padding: 82px 11.4% 22px;
+    padding: 82px 0 0;
 }
 
 .contact-inner {
     min-height: 390px;
+    padding: 0 11.4%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -466,14 +535,66 @@ h2,
     background: #70492f;
 }
 
-.contact-foot {
-    padding-top: 20px;
+.site-footer {
+    min-height: 78px;
+    padding: 0 5.4%;
     border-top: 1px solid rgba(255, 255, 255, .2);
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
     justify-content: space-between;
-    font-size: 8px;
-    letter-spacing: .11em;
     color: var(--color-gray);
+}
+
+.footer-brand {
+    width: max-content;
+    font-size: 9px;
+    letter-spacing: .12em;
+}
+
+.footer-brand span {
+    margin-left: 2px;
+    font-size: 7px;
+    vertical-align: top;
+}
+
+.footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.footer-socials a {
+    display: grid;
+    place-items: center;
+    color: var(--color-gray);
+    transition: color .2s, transform .2s;
+}
+
+.footer-socials a:hover {
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+
+.footer-credit {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 25px;
+    font-size: 8px;
+    letter-spacing: .12em;
+}
+
+.footer-credit a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-gray);
+    white-space: nowrap;
+}
+
+.footer-credit a:hover {
+    color: var(--color-white);
 }
 
 @media (max-width: 700px) {
@@ -491,13 +612,14 @@ h2,
     }
 
     .site-header {
-        height: 73px;
-        inset-inline: 6%;
+        height: 78px;
+        padding-inline: 6%;
     }
 
     .site-header nav {
-        gap: 17px;
-        font-size: 10px;
+        gap: 15px;
+        font-size: 12px;
+        letter-spacing: .1em;
     }
 
     .header-location {
@@ -505,7 +627,7 @@ h2,
     }
 
     .wordmark {
-        font-size: 17px;
+        font-size: 33px;
     }
 
     .hero-content {
@@ -547,8 +669,8 @@ h2,
         padding: 52px 0;
     }
 
-    .intro-kicker {
-        font-size: 76px;
+    .about-photo {
+        max-width: 380px;
     }
 
     .intro-copy .intro-lead {
@@ -606,25 +728,46 @@ h2,
     }
 
     .contact {
-        padding: 65px 7% 18px;
+        padding-top: 65px;
     }
 
     .contact-inner {
         min-height: 340px;
+        padding-inline: 7%;
     }
 
     .contact h2 {
         font-size: 77px;
     }
 
-    .contact-foot {
-        gap: 12px;
-        flex-wrap: wrap;
-        line-height: 1.7;
+    .site-footer {
+        min-height: 112px;
+        padding: 16px 7%;
+        grid-template-columns: 1fr auto;
+        row-gap: 18px;
     }
 
-    .contact-foot span:nth-child(2) {
+    .footer-credit {
+        grid-column: 1 / -1;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 7px;
+    }
+
+    .footer-credit a span {
         display: none;
+    }
+
+    .footer-socials {
+        gap: 18px;
+    }
+
+    .menu-overlay {
+        padding: 110px 7% 35px;
+    }
+
+    .menu-overlay nav a {
+        font-size: 54px;
     }
 }
 
