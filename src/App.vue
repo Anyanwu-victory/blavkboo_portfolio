@@ -1,45 +1,181 @@
 <script setup>
-import { ArrowDown, ArrowUpRight, Play } from 'lucide-vue-next'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Instagram,
+  Mail,
+  MapPin,
+  Moon,
+  Music2,
+  Sun,
+  Youtube,
+} from 'lucide-vue-next'
 
-const films = [
-  { title: 'The quiet in between', type: 'Documentary · 2024', image: 'photo-1519608487953-e999c86e7455', tone: 'tone-one' },
-  { title: 'Made of more', type: 'Brand film · 2024', image: 'photo-1531058020387-3be344556be6', tone: 'tone-two' },
-  { title: 'A city, still moving', type: 'Visual journal · 2023', image: 'photo-1519608487953-e999c86e7455', tone: 'tone-three' },
-  { title: 'Light finds a way', type: 'Campaign · 2023', image: 'photo-1500530855697-b586d89ba3ee', tone: 'tone-four' },
+const savedTheme = window.localStorage.getItem('blavkboo-theme')
+const preferredTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+const theme = ref(savedTheme || preferredTheme)
+const profilePhoto = ref(null)
+const photoReady = ref(false)
+const photoInView = ref(false)
+let photoObserver
+
+watch(theme, (value) => {
+  document.documentElement.dataset.theme = value
+  window.localStorage.setItem('blavkboo-theme', value)
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', value === 'dark' ? '#1b1b17' : '#f7f4e9')
+}, { immediate: true })
+
+onMounted(() => {
+  if (!profilePhoto.value || !('IntersectionObserver' in window)) {
+    photoInView.value = true
+    return
+  }
+
+  photoObserver = new IntersectionObserver(([entry]) => {
+    photoInView.value = entry.isIntersecting
+  }, { threshold: 0.35 })
+
+  photoReady.value = true
+  photoObserver.observe(profilePhoto.value)
+})
+
+onUnmounted(() => photoObserver?.disconnect())
+
+// Public profile links used in the films section.
+const socialLinks = [
+  { name: 'Instagram', note: 'Reels, edits & behind the scenes', icon: Instagram, href: 'https://www.instagram.com/blavkboo44' },
+  { name: 'TikTok', note: 'Quick cuts & moments in motion', icon: Music2, href: 'https://www.tiktok.com/@theblavkguy0' },
+  { name: 'YouTube', note: 'Films, stories & longer cuts', icon: Youtube, href: 'https://youtube.com/@blavkboo' },
+]
+
+const focusAreas = [
+  'General videography',
+  'Automotive content',
+]
+
+const editingTools = [
+  { name: 'CapCut', logo: '/assets/editing-tools/capcut.svg', className: 'tool-capcut' },
+  { name: 'DaVinci Resolve', logo: '/assets/editing-tools/davinci-resolve.svg', className: 'tool-davinci' },
+  { name: 'Premiere Pro', logo: '/assets/editing-tools/premiere-pro.svg', className: 'tool-premiere' },
 ]
 </script>
 
 <template>
-  <main>
-    <section id="home" class="hero">
-      <img class="hero-image" src="/blavkboo-hero.png" alt="A filmmaker looking out over Abuja at dusk" />
-      <div class="hero-shade"></div>
-      <header class="site-header">
-        <a href="#home" class="wordmark" aria-label="Blavkboo home">BLAVKBOO<span>®</span></a>
-        <nav aria-label="Main navigation"><a href="#about">About</a><a href="#work">Selected work</a><a href="#contact">Contact <ArrowUpRight :size="13" /></a></nav>
-        <span class="header-location">ABUJA, NG</span>
-      </header>
-      <div class="hero-content">
-        <p class="eyebrow"><span class="live-dot"></span> INDEPENDENT VIDEOGRAPHER &amp; EDITOR</p>
-        <h1>Stories that<br /><em>stay with you.</em></h1>
-        <div class="hero-bottom"><p>Finding the feeling in every frame.<br />Made with intention in Abuja, Nigeria.</p><a href="#work" class="round-link" aria-label="Explore selected work"><ArrowDown :size="19" /></a></div>
+  <main id="home" class="portfolio-page">
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="Blavkboo home"><span class="brand-mark">B</span><span>BLAVKBOO<small>®</small></span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#socials">My films</a>
+        <a href="#contact">Contact <ArrowUpRight :size="13" /></a>
+      </nav>
+      <button
+        class="theme-toggle"
+        type="button"
+        :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+        :title="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+        @click="theme = theme === 'dark' ? 'light' : 'dark'"
+      >
+        <Sun v-if="theme === 'dark'" :size="17" />
+        <Moon v-else :size="17" />
+      </button>
+    </header>
+
+    <section class="poster" aria-labelledby="poster-title">
+      <div class="poster-topline"><span>INDEPENDENT VIDEOGRAPHER · ABUJA, NIGERIA</span><span>VISUAL STORIES / 2026</span></div>
+      <div class="poster-stage">
+        <div class="poster-title" id="poster-title" aria-label="Portfolio">
+          <span>PORT</span><span>FOLIO</span>
+        </div>
+        <div class="poster-side poster-side-left">
+          <span class="small-label">THE PERSON BEHIND THE CAMERA</span>
+          <strong>EBUBE FELIX<br />OKOLO</strong>
+          <span class="script-note">Videographer &amp; editor</span>
+        </div>
+        <!-- <div class="portrait-cutout"><img src="/assets/blavkboo-image.jpeg" alt="Portrait of videographer Ebube Felix Okolo" fetchpriority="high" /></div> -->
+        <div class="poster-side poster-side-right">
+          <span class="small-label">WHAT I MAKE</span>
+          <span>General videography</span>
+          <span>Automotive films</span>
+          <span>Stories in motion</span>
+        </div>
+        <span class="year-sticker">’26</span>
+        <span class="poster-star star-one" aria-hidden="true"></span>
+        <span class="poster-star star-two" aria-hidden="true"></span>
+        <span class="poster-bottom-note">BASED IN ABUJA · AVAILABLE WORLDWIDE</span>
       </div>
-      <div class="hero-foot"><span>FILM / 001 — INTRODUCTION</span><span>SCROLL TO EXPLORE ↓</span><span>9°04′N 7°29′E</span></div>
+      <div class="poster-scroll"><span>SCROLL TO MEET THE FILMMAKER</span><ArrowDownRight :size="15" /></div>
     </section>
 
-    <section id="about" class="intro section-wrap">
-      <div class="section-label"><span>01 / THE PERSON</span><span>BEHIND THE CAMERA</span></div>
-      <div class="intro-grid"><p class="intro-kicker">A good story<br />makes you <em>feel.</em></p><div class="intro-copy"><p class="intro-lead">I’m Ebube Felix Okolo — a videographer and video editor drawn to the stories hiding in plain sight.</p><p>Working under the name Blavkboo, I create cinematic films and thoughtful content that bring people, places and brands closer to the people they want to reach.</p><a class="text-link" href="#contact">A little more about me <ArrowUpRight :size="16" /></a></div></div>
-      <div class="intro-meta"><span>BASED IN ABUJA, NIGERIA</span><span>AVAILABLE FOR SELECT PROJECTS <span class="live-dot"></span></span></div>
-    </section>
+    <section id="about" class="profile-paper">
+      <div class="section-marker"><span>01 / A LITTLE ABOUT ME</span><span>BLAVKBOO® · VIDEO PORTFOLIO</span></div>
+      <div class="profile-grid">
+        <div ref="profilePhoto" class="profile-photo-wrap" :class="{ 'photo-ready': photoReady, 'photo-in-view': photoInView }">
+          <span class="photo-pin" aria-hidden="true">✳</span>
+          <div class="profile-photo"><img src="/assets/blavkboo-image.jpeg" alt="Ebube Felix Okolo, also known as Blavkboo" loading="lazy" /></div>
+          <span class="photo-caption">EBUBE, BEHIND THE LENS</span>
+        </div>
+        <div class="bio-block">
+          <p class="hello-label">Hello<span>!</span></p>
+          <p class="bio-copy">Hi, I’m <span class="script-note">Ebube Felix Okolo</span>, the videographer and editor behind Blavkboo. I create cinematic films for people, places, events and brands, with a special focus on automotive content.</p>
+          <div class="location-line"><MapPin :size="17" /><span>Based in <strong>Abuja, Nigeria</strong> · Available for travel</span></div>
+          <a class="bio-link" href="#contact">Let’s work together <ArrowUpRight :size="15" /></a>
+          <div class="about-details-row">
+            <div class="tools-block">
+              <h2 class="tools-heading">Video editing tools</h2>
+              <div class="tools-grid" role="list" aria-label="Video editing software">
+                <div v-for="tool in editingTools" :key="tool.name" class="tool-card" role="listitem" :aria-label="tool.name" :title="tool.name">
+                  <span class="tool-logo" :class="tool.className"><img :src="tool.logo" alt="" loading="lazy" /></span>
+                </div>
+              </div>
+            </div>
 
-    <section id="work" class="work section-wrap">
-      <div class="section-label"><span>02 / SELECTED WORK</span><span>A FEW THINGS I’VE MADE</span></div>
-      <div class="work-heading"><h2>Frames from<br /><em>another world.</em></h2><p>A selection of films shaped by good people,<br />honest moments and a little bit of light.</p></div>
-      <div class="film-grid"><a v-for="(film, index) in films" :key="film.title" href="#contact" class="film-card" :aria-label="`View ${film.title}`"><div class="film-image" :class="film.tone" :style="{ backgroundImage: `linear-gradient(180deg, transparent 45%, rgba(0,0,0,.35)), url(https://images.unsplash.com/${film.image}?auto=format&fit=crop&w=1200&q=85)` }"><span class="film-index">0{{ index + 1 }}</span><span class="play-button"><Play :size="16" fill="currentColor" /></span><span class="film-duration">FILM · 0{{ index + 2 }}:18</span></div><div class="film-caption"><div><h3>{{ film.title }}</h3><p>{{ film.type }}</p></div><ArrowUpRight class="film-arrow" :size="20" /></div></a></div>
-      <p class="gallery-note">THE FULL FILM ARCHIVE IS GROWING. <span>MORE STORIES, SOON.</span></p>
-    </section>
+            <div id="focus" class="focus-block">
+              <h2 class="services-heading">What I do</h2>
+              <ul class="services-list">
+                <li v-for="service in focusAreas" :key="service">{{ service }}</li>
+              </ul>
+            </div>
+          </div>
+      </div>
+      </div>
 
-    <section id="contact" class="contact"><div class="contact-inner"><p class="eyebrow">HAVE A STORY IN MIND?</p><h2>Let’s make<br /><em>something real.</em></h2><a href="mailto:hello@blavkboo.com" class="contact-link">Tell me about it <ArrowUpRight :size="18" /></a></div><div class="contact-foot"><span>BLAVKBOO® — EBUBE FELIX OKOLO</span><span>ABUJA, NIGERIA · AVAILABLE WORLDWIDE</span><a href="#home">BACK TO TOP ↑</a></div></section>
+      <div id="socials" class="socials-block">
+        <div class="section-marker"><span>02 / FIND MY FILMS</span><span>WATCH ON MY SOCIALS</span></div>
+        <p class="socials-heading">My videos live<br />over <span>here.</span></p>
+        <div class="social-list">
+          <template v-for="(social, index) in socialLinks" :key="social.name">
+            <a v-if="social.href" class="social-row" :href="social.href" target="_blank" rel="noreferrer" :aria-label="`Open Blavkboo on ${social.name}`">
+              <span class="social-index">0{{ index + 1 }}</span>
+              <component :is="social.icon" class="social-icon" :size="20" />
+              <span class="social-name">{{ social.name }}<small>{{ social.note }}</small></span>
+              <span class="social-action">Watch <ArrowUpRight :size="15" /></span>
+            </a>
+            <div v-else class="social-row social-placeholder" :aria-label="`${social.name} profile link coming soon`">
+              <span class="social-index">0{{ index + 1 }}</span>
+              <component :is="social.icon" class="social-icon" :size="20" />
+              <span class="social-name">{{ social.name }}<small>{{ social.note }}</small></span>
+              <span class="social-action">Link coming soon</span>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <section id="contact" class="contact-block">
+        <div>
+          <p class="section-marker"><span>03 / HAVE A STORY?</span><span>LET’S MAKE IT MOVE</span></p>
+          <h2>Let’s make<br /><em>something real.</em></h2>
+          <a class="contact-link" href="mailto:ebubefelix28@gmail.com">ebubefelix28@gmail.com <Mail :size="16" /></a>
+        </div>
+        <span class="contact-doodle" aria-hidden="true">✳</span>
+      </section>
+
+      <footer class="site-footer">
+        <a class="brand footer-brand" href="#home"><span class="brand-mark">B</span><span>BLAVKBOO<small>®</small></span></a>
+        <span>© 2026 BLAVKBOO · EBUBE FELIX OKOLO</span>
+        <a href="#home">BACK TO TOP <ArrowUpRight :size="13" /></a>
+      </footer>
+    </section>
   </main>
 </template>
