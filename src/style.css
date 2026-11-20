@@ -680,6 +680,11 @@ main {
     height: 25px;
 }
 
+.tool-capcut img {
+    width: 27px;
+    height: 27px;
+}
+
 .tool-premiere {
     background: transparent;
 }
