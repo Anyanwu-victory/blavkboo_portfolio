@@ -15,10 +15,14 @@ import {
 const savedTheme = window.localStorage.getItem('blavkboo-theme')
 const preferredTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
 const theme = ref(savedTheme || preferredTheme)
+const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
+const isNotFound = !['/', '/index.html'].includes(normalizedPath)
 const profilePhoto = ref(null)
 const photoReady = ref(false)
 const photoInView = ref(false)
 let photoObserver
+
+if (isNotFound) document.title = '404 — Page Not Found | Blavkboo'
 
 watch(theme, (value) => {
   document.documentElement.dataset.theme = value
@@ -62,7 +66,17 @@ const editingTools = [
 </script>
 
 <template>
-  <main id="home" class="portfolio-page">
+  <main v-if="isNotFound" class="not-found-page">
+    <section class="not-found-content" aria-labelledby="not-found-title">
+      <p class="not-found-kicker">BLAVKBOO · ABUJA, NIGERIA</p>
+      <p class="not-found-code" aria-hidden="true">404</p>
+      <h1 id="not-found-title">Page not found</h1>
+      <p class="not-found-copy">This frame didn’t make the final cut.</p>
+      <a class="not-found-link" href="/">Back to the portfolio <ArrowUpRight :size="15" /></a>
+    </section>
+  </main>
+
+  <main v-else id="home" class="portfolio-page">
     <header class="site-header">
       <a class="brand" href="#home" aria-label="Blavkboo home"><span class="brand-mark">B</span><span>BLAVKBOO<small>®</small></span></a>
       <nav class="main-nav" aria-label="Main navigation">
