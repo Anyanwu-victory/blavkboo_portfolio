@@ -97,7 +97,7 @@ const editingTools = [
     </header>
 
     <section class="poster" aria-labelledby="poster-title">
-      <div class="poster-topline"><span>INDEPENDENT VIDEOGRAPHER · ABUJA, NIGERIA</span><span>VISUAL STORIES / 2026</span></div>
+      <div class="poster-topline"><span>VIDEOGRAPHER · ABUJA, NIGERIA</span><span>VISUAL STORIES / 2026</span></div>
       <div class="poster-stage">
         <div class="poster-title" id="poster-title" aria-label="Portfolio">
           <span>PORT</span><span>FOLIO</span>
